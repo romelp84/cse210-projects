@@ -40,7 +40,6 @@ class Program
         {
             Console.WriteLine("Don't worry, you can try again. Keep it up!");
         }
-
         
     }
 }
