@@ -1,0 +1,4 @@
+Simple,Run a marathon,True
+Eternal,Read scriptures daily,False
+Checklist,Go to the gym,False,2,5
+Score,1200
