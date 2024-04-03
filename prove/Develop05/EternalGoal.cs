@@ -1,21 +1,24 @@
 using System;
 
-public class EternalGoal : Goal
+namespace GoalTracker
 {
-    public EternalGoal(string name) : base(name) { }
-
-    public override void RecordEvent(User user)
+    public class EternalGoal : Goal
     {
-        user.Score += 100; // 100 points for recording an event for an eternal goal
-    }
+        public EternalGoal(string name) : base(name) { }
 
-    public override void DisplayGoalStatus()
-    {
-        Console.WriteLine($"Eternal Goal: {Name}, Status: {(IsCompleted ? "Completed" : "Not Completed")}");
-    }
+        public override void RecordEvent(User user)
+        {
+            user.Score += 100; // 100 points for recording an event for an eternal goal
+        }
 
-    public override string Serialize()
-    {
-        return $"Eternal,{Name},{IsCompleted}";
+        public override void DisplayGoalStatus()
+        {
+            Console.WriteLine($"Eternal Goal: {Name}, Status: {(IsCompleted ? "Completed" : "Not Completed")}");
+        }
+
+        public override string Serialize()
+        {
+            return $"Eternal,{Name},{IsCompleted}";
+        }
     }
 }

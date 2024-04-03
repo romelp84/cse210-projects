@@ -1,35 +1,38 @@
 using System;
 
-public class ChecklistGoal : Goal
+namespace GoalTracker
 {
-    private int timesPretended;
-    private int pointsPerPretend;
-
-    public int TimesCompleted { get; set; }
-
-    public ChecklistGoal(string name, int timesPretended)
-        : base(name)
+    public class ChecklistGoal : Goal
     {
-        this.timesPretended = timesPretended;
-        pointsPerPretend = 500 / timesPretended;
-        TimesCompleted = 0;
-    }
+        private int timesPretended;
+        private int pointsPerPretend;
 
-    public override void RecordEvent(User user)
-    {
-        TimesCompleted++;
-        IsCompleted = TimesCompleted >= timesPretended;
+        public int TimesCompleted { get; set; }
 
-        user.Score += pointsPerPretend; // Points calculated based on the number of times pretended
-    }
+        public ChecklistGoal(string name, int timesPretended)
+            : base(name)
+        {
+            this.timesPretended = timesPretended;
+            pointsPerPretend = 500 / timesPretended;
+            TimesCompleted = 0;
+        }
 
-    public override void DisplayGoalStatus()
-    {
-        Console.WriteLine($"Checklist Goal: {Name}, Status: {(IsCompleted ? "Completed" : "Not Completed")} [{TimesCompleted}/{timesPretended}]");
-    }
+        public override void RecordEvent(User user)
+        {
+            TimesCompleted++;
+            IsCompleted = TimesCompleted >= timesPretended;
 
-    public override string Serialize()
-    {
-        return $"Checklist,{Name},{IsCompleted},{TimesCompleted},{timesPretended}";
+            user.Score += pointsPerPretend; // Points calculated based on the number of times pretended
+        }
+
+        public override void DisplayGoalStatus()
+        {
+            Console.WriteLine($"Checklist Goal: {Name}, Status: {(IsCompleted ? "Completed" : "Not Completed")} [{TimesCompleted}/{timesPretended}]");
+        }
+
+        public override string Serialize()
+        {
+            return $"Checklist,{Name},{IsCompleted},{TimesCompleted},{timesPretended}";
+        }
     }
 }

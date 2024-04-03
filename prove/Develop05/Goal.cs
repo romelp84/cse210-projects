@@ -1,15 +1,20 @@
-public abstract class Goal
+using System;
+
+namespace GoalTracker
 {
-    public string Name { get; set; }
-    public bool IsCompleted { get; set; }
-
-    public Goal(string name)
+    public abstract class Goal
     {
-        Name = name;
-        IsCompleted = false;
-    }
+        public string Name { get; set; }
+        public bool IsCompleted { get; set; }
 
-    public abstract void RecordEvent(User user);
-    public abstract void DisplayGoalStatus();
-    public abstract string Serialize();
+        public Goal(string name)
+        {
+            Name = name;
+            IsCompleted = false;
+        }
+
+        public abstract void RecordEvent(User user);
+        public abstract void DisplayGoalStatus();
+        public abstract string Serialize();
+    }
 }
