@@ -7,6 +7,16 @@ namespace GoalTracker
         static void Main(string[] args)
         {
             User user = new User();
+            string goalsFilePath = "goals.txt";
+
+            // Open the goals.txt file if it exists, otherwise create it
+            if (!System.IO.File.Exists(goalsFilePath))
+            {
+                System.IO.File.Create(goalsFilePath).Close();
+            }
+
+            // Load goals from the file
+            user.LoadGoals(goalsFilePath);
 
             while (true)
             {
@@ -18,7 +28,12 @@ namespace GoalTracker
                 Console.WriteLine("5. Exit");
 
                 Console.Write("Enter your choice: ");
-                int choice = int.Parse(Console.ReadLine());
+                int choice;
+                if (!int.TryParse(Console.ReadLine(), out choice))
+                {
+                    Console.WriteLine("Invalid choice. Please enter a valid option.");
+                    continue;
+                }
 
                 switch (choice)
                 {
@@ -39,7 +54,8 @@ namespace GoalTracker
                         user.DisplayScore();
                         break;
                     case 5:
-                        // Exit
+                        // Save goals and exit
+                        user.SaveGoals(goalsFilePath);
                         Environment.Exit(0);
                         break;
                     default:
@@ -57,10 +73,16 @@ namespace GoalTracker
                 Console.WriteLine("1. Simple Goal");
                 Console.WriteLine("2. Eternal Goal");
                 Console.WriteLine("3. Checklist Goal");
-                Console.WriteLine("4. Back to Main Menu");
+                Console.WriteLine("4. Negative Goal");
+                Console.WriteLine("5. Back to Main Menu");
 
                 Console.Write("Enter your choice: ");
-                int choice = int.Parse(Console.ReadLine());
+                int choice;
+                if (!int.TryParse(Console.ReadLine(), out choice))
+                {
+                    Console.WriteLine("Invalid choice. Please enter a valid option.");
+                    continue;
+                }
 
                 switch (choice)
                 {
@@ -81,10 +103,28 @@ namespace GoalTracker
                         Console.Write("Enter the name of the checklist goal: ");
                         string checklistGoalName = Console.ReadLine();
                         Console.Write("Enter the number of times you pretend to complete the goal: ");
-                        int timesPretended = int.Parse(Console.ReadLine());
+                        int timesPretended;
+                        if (!int.TryParse(Console.ReadLine(), out timesPretended))
+                        {
+                            Console.WriteLine("Invalid input. Please enter a valid number.");
+                            continue;
+                        }
                         user.AddGoal(new ChecklistGoal(checklistGoalName, timesPretended));
                         break;
                     case 4:
+                        // Negative Goal
+                        Console.Write("Enter the name of the negative goal: ");
+                        string negativeGoalName = Console.ReadLine();
+                        Console.Write("Enter the penalty points for this goal: ");
+                        int penaltyPoints;
+                        if (!int.TryParse(Console.ReadLine(), out penaltyPoints))
+                        {
+                            Console.WriteLine("Invalid input. Please enter a valid number.");
+                            continue;
+                        }
+                        user.AddGoal(new NegativeGoal(negativeGoalName, penaltyPoints));
+                        break;
+                    case 5:
                         // Back to Main Menu
                         return;
                     default:
@@ -105,9 +145,14 @@ namespace GoalTracker
             }
 
             Console.Write("Enter the index of the goal: ");
-            int goalIndex = int.Parse(Console.ReadLine()) - 1;
+            int goalIndex;
+            if (!int.TryParse(Console.ReadLine(), out goalIndex) || goalIndex <= 0 || goalIndex > user.Goals.Count)
+            {
+                Console.WriteLine("Invalid goal index.");
+                return;
+            }
 
-            user.RecordEvent(goalIndex);
+            user.RecordEvent(goalIndex - 1);
             Console.WriteLine("Event recorded successfully.");
         }
     }

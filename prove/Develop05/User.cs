@@ -13,13 +13,11 @@ namespace GoalTracker
         {
             Goals = new List<Goal>();
             Score = 0;
-            LoadGoals("goals.txt");
         }
 
         public void AddGoal(Goal goal)
         {
             Goals.Add(goal);
-            SaveGoals("goals.txt");
         }
 
         public void RecordEvent(int goalIndex)
@@ -27,7 +25,6 @@ namespace GoalTracker
             if (goalIndex >= 0 && goalIndex < Goals.Count)
             {
                 Goals[goalIndex].RecordEvent(this);
-                SaveGoals("goals.txt");
             }
             else
             {
